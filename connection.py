@@ -8,8 +8,24 @@ class Connection:
 
 	def get(self, *args):
 		endpoint = self.url_base + '/'.join(args)
+		print endpoint
 		return requests.get(endpoint, headers=self.headers, verify=False)
 	
 	def post(self, **kwargs):
-		pass	
+		pass
 		
+	def retrieve_open_orders(self):
+        	return self.get('orders')
+  
+  	def retrieve_wallet(self):
+    		return self.get('wallet')
+  
+  	def retrieve_recent_transactions(self):
+        	return self.get('transactions')
+  
+  	def retrieve_current_contracts(self):
+        	return self.get('contracts')
+  
+  	def retrieve_order_book(self, contract_id):
+        	return self.get('contractorders', contract_id)
+
