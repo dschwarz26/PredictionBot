@@ -8,8 +8,7 @@ class Connection:
 
 	def get(self, *args):
 		endpoint = self.url_base + '/'.join(args)
-		print endpoint
-		return requests.get(endpoint, headers=self.headers, verify=False)
+		return requests.get(endpoint, headers=self.headers, verify=False).json()
 	
 	def post(self, **kwargs):
 		pass
@@ -29,3 +28,8 @@ class Connection:
   	def retrieve_order_book(self, contract_id):
         	return self.get('contractorders', contract_id)
 
+	def get_bitcoin_volatility(self):
+		return requests.get('http://btcvol.info/latest').json()[u'Volatility']
+
+	def get_bitcoin_price(self):
+		return requests.get('https://coinbase.com/api/v1/currencies/exchange_rates').json()[u'btc_to_usd']
