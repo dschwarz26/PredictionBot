@@ -1,4 +1,6 @@
 import connection
+import probability
+import datetime
 
 def get_total_funds(conn):
 	wallet_data = conn.retrieve_wallet()
@@ -22,12 +24,13 @@ def get_current_contracts(conn):
 			
 if __name__ == '__main__':		
 	conn = connection.Connection()
-	print conn.get_bitcoin_volatility()
-	print conn.get_bitcoin_price()
+	rel_vol =  conn.get_bitcoin_volatility()
+	price = float(conn.get_bitcoin_price())
+	vol = rel_vol * price / 100
 	#print get_total_funds(conn)
 	#print get_available_funds(conn)
-	#print get_current_bitcoin_contracts(conn)
-	#print get_all_bitcoin_contracts(conn)
+	#contracts = get_all_bitcoin_contracts(conn)
+	#print contracts.keys()
 	#print conn.retrieve_recent_transactions()
 	#print conn.retrieve_current_contracts()
-
+	print probability.get_option_value(datetime.datetime(2014, 3, 30), 700, price, vol)
