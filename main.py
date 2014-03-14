@@ -45,20 +45,26 @@ def send_email(option_data):
 		"""
 	for option in option_data:
 		content += """\
-				<li>%s</li>
-		""" % option
+				<li><font color='%s'>%s</font></li>
+		""" % (option['color'], option['data'])
 	content += """\
 			</body>
 		</html>
 		"""
 	print content
 	msg = MIMEText(content, 'html')
+	from_email = 'DanielSchwarz27@gmail.com'
+	to_email = 'DanielSchwarz26@gmail.com'
+	password = open('password.txt', 'rf').readline()[:-1]
 	msg['Subject'] = 'PredictiousBot Data for %s' % datetime.datetime.utcnow().strftime('%Y-%m-%d')
-	msg['From'] = 'DanielSchwarz26@gmail.com'
-	msg['To'] = 'DanielSchwarz26@gmail.com'
-	s = smtplib.SMTP('localhost')
-	s.sendmail(msg['From'], msg['To'], msg.as_string())
-	s.quit()
+	msg['From'] = from_email
+	msg['To'] = to_email
+	server = smtplib.SMTP('smtpcorp.com', 2525)
+	server.ehlo()
+	server.starttls()
+	server.login(from_email, password)
+	server.sendmail(from_email, to_email, msg.as_string())
+	server.close()
 	
 if __name__ == '__main__':		
 	conn = connection.Connection()
@@ -71,7 +77,7 @@ if __name__ == '__main__':
 	#print get_available_funds(conn)
 	contracts = get_all_bitcoin_contracts(conn)
 	option_data = []
-	for key, val in contracts.iteritems():
+	for key, val in sorted(contracts.iteritems(), key = lambda x: x):
 		name_data = parse.parse_contract_name(key)
 		if name_data:
 			option_value = probability.get_option_value(
@@ -81,8 +87,18 @@ if __name__ == '__main__':
 				vol
 			)
 			highest_bid, lowest_ask = get_buy_and_sell_points(val)
-			option_data.append('Contract %s has value %.3f. Highest bid: %.2f. Lowest ask: %.2f' % (
-				key, option_value, highest_bid, lowest_ask))
+			data = 'Contract %s has value %.3f. Highest bid: %.2f. Lowest ask: %.2f' % (
+				key, option_value, highest_bid, lowest_ask)
+			color = ''
+			if option_value > lowest_ask:
+				if option_value < highest_bid:
+					color = 'purple'
+				else:
+					color = 'green'
+			elif option_value < highest_bid:
+				color = 'red'
+			option_data.append({'data': data, 'color': color})
+
 	print 'Got option data'
 	send_email(option_data)
 	print 'Sent email'
