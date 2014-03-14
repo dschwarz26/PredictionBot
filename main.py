@@ -51,7 +51,6 @@ def send_email(option_data):
 			</body>
 		</html>
 		"""
-	print content
 	msg = MIMEText(content, 'html')
 	from_email = 'DanielSchwarz27@gmail.com'
 	to_email = 'DanielSchwarz26@gmail.com'
