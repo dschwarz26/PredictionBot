@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import connection
 import probability
 import datetime
