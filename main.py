@@ -4,9 +4,6 @@ import connection
 import probability
 import datetime
 import parse
-import smtplib
-
-from email.mime.text import MIMEText
 
 def get_total_funds(conn):
 	wallet_data = conn.retrieve_wallet()
@@ -67,12 +64,10 @@ def send_email(option_data):
 	server.sendmail(from_email, to_email, msg.as_string())
 	server.close()
 	
-if __name__ == '__main__':		
+def run():
 	conn = connection.Connection()
 	rel_vol =  conn.get_bitcoin_volatility()
-	print 'Got volatility'
 	curr_price = float(conn.get_bitcoin_price())
-	print 'Got price'
 	vol = rel_vol * curr_price / 100
 	#print get_total_funds(conn)
 	#print get_available_funds(conn)
@@ -105,3 +100,6 @@ if __name__ == '__main__':
 	print 'Sent email'
 	#print conn.retrieve_recent_transactions()
 	#print conn.retrieve_current_contracts()
+
+if __name__ == '__main__':
+  run()
