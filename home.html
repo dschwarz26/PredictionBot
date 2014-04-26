@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+  <body>
+     <form action="/run" method="post">
+          Simulation Depth:<div><textarea name="numTrials" rows="1" cols="10"></textarea></div>
+      <div><input type="submit" value="Run Simulation"></div>
+        </form>
+  </body>
+</html>
+{% endautoescape %}

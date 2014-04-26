@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+	<body>
+    <h2>Bitcoin price: {{price}} </h2>
+    <h2>Bitcoin volatility: {{volatility}} </h2>
+      {% for option in option_data %}
+				<font color={{option.color}}>{{option.data}}</font>
+      {% endfor %}
+  </body>
+</html>
+{% endautoescape %}

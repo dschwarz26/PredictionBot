@@ -15,9 +15,8 @@ def simulate_walk(num_trials, price_difference, num_days, std_dev):
 			num_successes += 1
 	return num_successes
 
-def get_option_value(date, price, strike_price, std_dev):
+def get_option_value(date, price, strike_price, num_trials, std_dev):
 	num_days = (date - datetime.datetime.utcnow()).days
-	num_trials = 100000
 	price_difference = price - strike_price
 	num_successes = simulate_walk(num_trials, price_difference, num_days, std_dev)
 	return 10 * float(num_successes) / float(num_trials)
